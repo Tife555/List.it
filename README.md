@@ -1,2 +1,2 @@
-# List.it
-A listing app for entering statements and guessing who said them
+# List.it_Server
+The server for a listing app, List.it, which allows authors enter statements made by users and other users can guess who made the different statements.
