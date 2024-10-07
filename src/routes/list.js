@@ -1,7 +1,7 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import Joi from "joi";
-import { getAuthorsOfList } from "./authorlist";
+import { getAuthorsOfList } from "./authorlist.js";
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -45,10 +45,11 @@ router.delete("/list/:id", async (req,res) => {
 
     // Validate input
 
-    const {error} = listIdSchema.validate({id: Number(req.params.id)});
+    const id = Number(req.params.id);
+
+    const {error} = listIdSchema.validate(id);
     if (error) return res.status(400).json({error: error.details[0].message});
 
-    const id = Number(req.params.id);
 
     try {
         const deletedList = await prisma.list.delete({
@@ -90,10 +91,11 @@ router.get("/list/:id", async (req,res) => {
      
     // Validate input
 
-    const {error} = listIdSchema.validate({id: Number(req.params.id)});
+    const id = Number(req.params.id);
+
+    const {error} = listIdSchema.validate(id);
     if (error) return res.status(400).json({error: error.details[0].message});
 
-    const id = Number(req.params.id);
 
     try {
         const listInfo = await prisma.list.findFirstOrThrow({
@@ -133,10 +135,10 @@ router.put("/list/:id", async (req,res) => {
 
     // Validate input
 
-    const {error} = listIdSchema.validate({id: Number(req.params.id)});
-    if (error) return res.status(400).json({error: error.details[0].message});
-
     const id = Number(req.params.id);
+
+    const {error} = listIdSchema.validate(id);
+    if (error) return res.status(400).json({error: error.details[0].message});
 
     const { name, tag } = req.body;
 
@@ -164,10 +166,10 @@ router.get("/list/:id/authors", async (req,res) => {
 
     // Validate input
 
-    const {error} = listIdSchema.validate({id: Number(req.params.id)});
-    if (error) return res.status(400).json({error: error.details[0].message});
-
     const id = Number(req.params.id);
+
+    const {error} = listIdSchema.validate(id);
+    if (error) return res.status(400).json({error: error.details[0].message});
 
     try {
         const authorsOfList = await getAuthorsOfList(id);

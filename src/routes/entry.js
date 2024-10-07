@@ -50,10 +50,10 @@ router.delete("/entry/:id", async (req, res) => {
 
     // Validate input
 
-    const { error } = entryIdSchema.validate({ id: Number(req.params.id) });
-    if (error) return res.status(400).json({ error: error.details[0].message });
-
     const id = Number(req.params.id);
+
+    const { error } = entryIdSchema.validate(id);
+    if (error) return res.status(400).json({ error: error.details[0].message });
 
     try {
         const deletedEntry = await prisma.entry.delete({
@@ -75,12 +75,15 @@ router.put("/entry/:id", async (req, res) => {
 
     // Validate input
 
+    const id = Number(req.params.id);
+
+    const { error: idError } = entryIdSchema.validate(id);
+    if (idError) return res.status(400).json({ error: idError.details[0].message });
+
     const { error } = entrySchema.validate(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
     const { statement, listId, enteredById, statedById, color } = req.body;
-
-    const id = Number(req.params.id);
 
     try {
         const updatedEntry = await prisma.entry.update({
@@ -102,3 +105,5 @@ router.put("/entry/:id", async (req, res) => {
         res.status(500).json({ error: "Could not update entry" });
     }
 })
+
+export default router;

@@ -1,0 +1,29 @@
+{
+  "name": "list.it_server",
+  "version": "1.0.0",
+  "description": "The server for the list app, list.it",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.19.1",
+    "express": "^4.18.2",
+    "joi": "^17.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tife555/List.it_Server.git"
+  },
+  "author": "Boluwatife Ogunmodede",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tife555/List.it_Server/issues"
+  },
+  "homepage": "https://github.com/Tife555/List.it_Server#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

@@ -14,7 +14,7 @@ const idSchema = Joi.number().integer().positive().required();
 
 // Add author to list
 
-export const addAuthorToList = async (authorId: number, listId: number) => {
+export const addAuthorToList = async (authorId, listId) => {
 
     // Validate input
 
@@ -41,7 +41,7 @@ export const addAuthorToList = async (authorId: number, listId: number) => {
 
 // Remove author from list
 
-export const removeAuthorFromList = async (authorId: number, listId: number) => {
+export const removeAuthorFromList = async (authorId, listId) => {
     
     // Validate input
 
@@ -70,7 +70,7 @@ export const removeAuthorFromList = async (authorId: number, listId: number) => 
 
 // Get authors of list
 
-export const getAuthorsOfList = async (listId: number) => {
+export const getAuthorsOfList = async (listId) => {
 
     // Validate input
 
@@ -99,7 +99,7 @@ export const getAuthorsOfList = async (listId: number) => {
 
 // Get lists of author
 
-export const getListsOfAuthor = async (authorId: number) => {
+export const getListsOfAuthor = async (authorId) => {
 
     // Validate input
 

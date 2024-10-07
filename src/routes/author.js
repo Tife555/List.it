@@ -1,7 +1,7 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import Joi from "joi";
-import { getListsOfAuthor } from "./authorlist";
+import { getListsOfAuthor } from "./authorlist.js";
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -49,10 +49,11 @@ router.delete("/author/:id", async (req,res) => {
 
     // Validate input
 
-    const { error } = authorIdSchema.validate({ id: Number(req.params.id) });
+    const id = Number(req.params.id);
+
+    const { error } = authorIdSchema.validate(id);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
-    const id = Number(req.params.id);
 
     try {
         const deletedAuthor = await prisma.author.delete({
@@ -70,7 +71,7 @@ router.delete("/author/:id", async (req,res) => {
 
 // Get all authors
 
-router.get("/author", async (req, res) => {
+router.get("/authors", async (req, res) => {
 
     try {
         const authors = await prisma.author.findMany({
@@ -94,12 +95,12 @@ router.get("/author", async (req, res) => {
 
 router.get("/author/:id", async (req, res) => {
 
+    const id = Number(req.params.id);
+
     // Validate input
 
-    const { error } = authorIdSchema.validate({ id: Number(req.params.id) });
+    const { error } = authorIdSchema.validate(id);
     if (error) return res.status(400).json({ error: error.details[0].message });
-
-    const id = Number(req.params.id);
 
     try {
         const authorInfo = await prisma.author.findFirstOrThrow({
@@ -147,13 +148,14 @@ router.put("/author/:id", async (req, res) => {
 
     // Validate input
 
-    const { error } = authorIdSchema.validate({ id: Number(req.params.id) });
+    const id = Number(req.params.id);
+
+    const { error } = authorIdSchema.validate(id);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
     const { error: validationError } = authorSchema.validate(req.body);
     if (validationError) return res.status(400).json({ error: validationError.details[0].message });
 
-    const id = Number(req.params.id);
     const { name, email, authorName, password } = req.body;
 
     try {
@@ -181,11 +183,12 @@ router.put("/author/:id", async (req, res) => {
 router.get("/author/:id/lists", async (req, res) => {
 
     // Validate input
+    
+    const id = Number(req.params.id);
 
-    const { error } = authorIdSchema.validate({ id: Number(req.params.id) });
+    const { error } = authorIdSchema.validate(id);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
-    const id = Number(req.params.id);
 
     try {
         const lists = await getListsOfAuthor(id);
