@@ -1,0 +1,51 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model Author {
+  id         Int          @id @default(autoincrement())
+  name       String       @db.VarChar(100)
+  email      String       @unique @db.VarChar(100)
+  authorName String       @unique @db.VarChar(100)
+  password   String       @db.Char(60)
+  createdAt  DateTime     @default(now())
+  lists      AuthorList[]
+  entries    Entry[]      @relation("AuthorEntries")
+  statements Entry[]      @relation("AuthorStatements")
+}
+
+model Entry {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  statement   String
+  listId      Int
+  enteredById Int?
+  statedById  Int?
+  color       String
+  enteredBy   Author?  @relation("AuthorEntries", fields: [enteredById], references: [id])
+  list        List     @relation("ListEntries", fields: [listId], references: [id])
+  statedBy    Author?  @relation("AuthorStatements", fields: [statedById], references: [id])
+}
+
+model List {
+  id        Int          @id @default(autoincrement())
+  createdAt DateTime     @default(now())
+  name      String       @db.VarChar(100)
+  tag       String?
+  authors   AuthorList[]
+  entries   Entry[]      @relation("ListEntries")
+}
+
+model AuthorList {
+  authorId Int
+  listId   Int
+  author   Author @relation(fields: [authorId], references: [id])
+  list     List   @relation(fields: [listId], references: [id])
+
+  @@id([authorId, listId])
+}
