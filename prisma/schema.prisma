@@ -24,8 +24,8 @@ model Entry {
   createdAt   DateTime @default(now())
   statement   String
   listId      Int
-  enteredById Int?
-  statedById  Int?
+  enteredById Int
+  statedById  Int
   color       String
   enteredBy   Author?  @relation("AuthorEntries", fields: [enteredById], references: [id])
   list        List     @relation("ListEntries", fields: [listId], references: [id])
